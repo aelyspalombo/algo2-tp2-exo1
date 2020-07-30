@@ -1,33 +1,29 @@
-function faireQuelqueChose () {
-    y += 1
-    x += 1
-    if (y == 5) {
-        while (y != 0) {
-            led.plot(x, y)
-            basic.pause(200)
-            led.unplot(x, y)
+function deplacer_diode_sur_colonne (colonne: number) {
+    for (let ligne = 0; ligne <= 4; ligne++) {
+        if (led.point(colonne, ligne)) {
+            prochaine_ligne = ligne + direction[colonne]
+            if (prochaine_ligne >= 4) {
+                direction[colonne] = -1
+            } else if (prochaine_ligne <= 0) {
+                direction[colonne] = 1
+            }
+            led.unplot(colonne, ligne)
+            led.plot(colonne, prochaine_ligne)
+            break;
         }
-    } else if (x == 5) {
-        while (x != 0) {
-            led.plot(x, y)
-            basic.pause(200)
-            led.unplot(x, y)
-        }
-    } else {
-    	
     }
 }
-let x = 0
-let y = 0
-let liste = [0, 1, 2, 3, 4]
-y = 0
+let prochaine_ligne = 0
+let direction: number[] = []
+direction = [1, 1, 1, 1, -1]
+led.plot(0, 0)
+led.plot(1, 1)
+led.plot(2, 2)
+led.plot(3, 3)
+led.plot(4, 4)
 basic.forever(function () {
-    for (let x of liste) {
-        led.plot(x, y)
+    for (let colonne_boucle = 0; colonne_boucle <= 4; colonne_boucle++) {
+        deplacer_diode_sur_colonne(colonne_boucle)
     }
-    basic.pause(200)
-    for (let x of liste) {
-        led.unplot(x, y)
-        faireQuelqueChose()
-    }
+    basic.pause(100)
 })
